@@ -8,7 +8,7 @@ public class Sword : MonoBehaviour
     private Animator swordanimator = new Animator();
     private Sprite swordsprite;
     public int damage;
-    //private int weight; -- possibly affect players move speed/ jump height?
+    private int weight;
 
 
     // Start is called before the first frame update
@@ -16,25 +16,34 @@ public class Sword : MonoBehaviour
     {
         
         swordsprite = GetComponent<Sprite>();
-        //swordanimator = GetComponent<Animator>();
+        swordanimator = GetComponent<Animator>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0)) // Left mouse button
+        {
+            Slash();
+        }
     }
 
-    //switching direction with character
-    void FlipX()
-    {
-        transform.rotation.y *= -1;
-    }
+    
 
     void Slash()
     {
-        //animate slash
-        //-damage to target if hit
+        swordAnimator.SetTrigger("Slash"); // Assuming you have a trigger in the Animator
+
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, 1f); // radius can change if needed
+
+        foreach (Collider2D target in hitTargets)
+        {
+            target.hp = target.GetComponent<hp>();
+            if (target.hp != null)
+            {
+                target.hp.TakeDamage(damage); // slash damage can be set
+            }
+        }
     }
 }
