@@ -54,6 +54,9 @@ TagManager:
   - name: Floor Details
     uniqueID: 584450813
     locked: 0
+  - name: Interacable Objects
+    uniqueID: 1018807261
+    locked: 0
   - name: Player
     uniqueID: 3651411247
     locked: 0
