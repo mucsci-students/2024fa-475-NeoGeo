@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Walkable
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Floors
+    uniqueID: 2216575153
+    locked: 0
+  - name: Wall Background
+    uniqueID: 3754479277
+    locked: 0
+  - name: Walls
+    uniqueID: 3980016101
+    locked: 0
+  - name: Floor Details
+    uniqueID: 584450813
+    locked: 0
+  - name: Player
+    uniqueID: 3651411247
     locked: 0
