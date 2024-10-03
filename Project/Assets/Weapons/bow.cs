@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class NeoBow : Weapon
+public class Bow : Weapon
 {
     int arrows = 10;
     private float chargeTime;
@@ -11,9 +11,8 @@ public class NeoBow : Weapon
     // Start is called before the first frame update
     void Start()
     {
-        wpnSprite = "bow.png";
         damage = 7;
-        weight = .5;
+        weight = 2;
         
     }
 
@@ -41,7 +40,7 @@ public class NeoBow : Weapon
     {
         //todo
     }
-    }
+
 
     
 
@@ -51,13 +50,6 @@ public class NeoBow : Weapon
 
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, 1f); // radius can change if needed
 
-        foreach (Collider2D target in hitTargets)
-        {
-            target.hp = target.GetComponent<hp>();
-            if (target.hp != null)
-            {
-                target.hp.TakeDamage(damage); // slash damage can be set
-            }
-        }
     }
+
 }

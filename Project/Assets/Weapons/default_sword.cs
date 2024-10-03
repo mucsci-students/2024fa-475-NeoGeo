@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NeoSword : Weapon 
+public class Sword : Weapon 
 {
 
     // Start is called before the first frame update
     void Start()
     {
-        wpnSprite = "sword1.png";
         damage = 10;
         weight = 1;
     }
@@ -30,13 +29,13 @@ public class NeoSword : Weapon
 
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, 1f); // radius can change if needed
 
-        foreach (Collider2D target in hitTargets)
-        {
-            target.hp = target.GetComponent<hp>();
-            if (target.hp != null)
-            {
-                target.hp.TakeDamage(damage); // slash damage can be set
-            }
-        }
+        //foreach (Collider2D target in hitTargets)
+        //{
+        //    target.hp = target.GetComponent<hp>();
+        //    if (target.hp != null)
+        //    {
+        //        target.hp.TakeDamage(damage); // slash damage can be set
+        //   }
+        //}
     }
 }

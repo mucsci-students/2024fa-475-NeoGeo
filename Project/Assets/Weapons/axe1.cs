@@ -9,7 +9,6 @@ public class NeoAxe : Weapon
     // Start is called before the first frame update
     void Start()
     {
-        wpnSprite = "axe1.png";
         damage = 23;
         weight = 3;
         
@@ -32,13 +31,6 @@ public class NeoAxe : Weapon
 
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, 1f); // radius can change if needed
 
-        foreach (Collider2D target in hitTargets)
-        {
-            target.hp = target.GetComponent<hp>();
-            if (target.hp != null)
-            {
-                target.hp.TakeDamage(damage); // slash damage can be set
-            }
-        }
+        
     }
 }
