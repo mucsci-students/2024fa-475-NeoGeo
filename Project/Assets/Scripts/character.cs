@@ -69,7 +69,7 @@ public class Character : MonoBehaviour
 
     void Slash()
     {
-       
+    
             if (motion != null)
             {
                 motion.SetTrigger("Slash");
