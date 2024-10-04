@@ -4,65 +4,75 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public Sprite playerSprite;
     public float speed = 5.0f;
+    public float jumpHeight = 5.0f;
     public Weapon currentWpn;
-    private Rigidbody2D body;
+    private Rigidbody2D rb;
     private Animator motion;
     private bool isAlive;
     public string playerName = "Girard";
     public int hp = 100;
+    private float moveX;
+    private float moveY;
 
     void Start()
     {
-        body = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         motion = GetComponent<Animator>();
         isAlive = true; // Set isAlive to true initially
     }
 
-    void Update()
+    void FixedUpdate()
     {
         HandleMovement();
 
+        
+    
+    }
+    void Update()
+    {
+        moveX = Input.GetAxis("Horizontal"); // left/right movement (A/D)
+        moveY = Input.GetAxis("Vertical"); // up/down movement (W/S)
         if (hp <= 0)
             Die();
-        else if (Input.GetMouseButtonDown(0)) // Left mouse button to attack
+        if (Input.GetMouseButtonDown(0)) // Left mouse button to attack
         {
             Slash();
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            motion.SetTrigger("Jump");
+        }
+
     }
 
     void HandleMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal"); // left/right movement (A/D)
-        float verticalInput = Input.GetAxis("Vertical"); // up/down movement (W/S)
 
-        Vector2 velocity = new Vector2(horizontalInput * speed, verticalInput * speed);
-        body.velocity = velocity;
+        Vector2 velocity = new Vector2(moveX * speed, moveY * speed);
+        rb.velocity = velocity;
 
         // Set animation parameters
         if (velocity != Vector2.zero && motion != null)
         {
-            motion.SetBool("isRunning", true);
-            // Optional: Set direction to flip the sprite or add directional animations
-            if (horizontalInput != 0)
+            motion.SetBool("isMoving", true);
+            if (moveX != 0)
             {
-                transform.localScale = new Vector3(Mathf.Sign(horizontalInput), 1, 1); // Flip sprite based on direction
+                transform.localScale = new Vector3(Mathf.Sign(moveX), 1, 1); // Flip sprite based on direction
             }
         }
         else if (motion != null)
         {
-            motion.SetBool("isRunning", false);
+            motion.SetBool("isMoving", false);
         }
     }
 
     void Slash()
     {
-        if(currentWpn != null)
-        {
+       
             if (motion != null)
             {
-                motion.SetTrigger("Slash"); // Assuming you have a trigger in the Animator
+                motion.SetTrigger("Slash");
             }
             
             Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, 1f); // radius can change if needed
@@ -76,8 +86,9 @@ public class Character : MonoBehaviour
                     targetHp.TakeDamage(currentWpn.damage); // Use the weapon's damage value
                 }
             }*/
-        }
+        
     }
+
 
     void Die()
     {
@@ -86,7 +97,7 @@ public class Character : MonoBehaviour
             isAlive = false;
             Debug.Log(playerName + " has died.");
             // Disable movement and play death animation
-            body.velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;
             if (motion != null)
             {
                 motion.SetTrigger("die");

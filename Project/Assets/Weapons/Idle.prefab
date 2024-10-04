@@ -122,8 +122,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSprite: {fileID: 0}
   speed: 5
-  jump: 10
-  current_wpn: {fileID: 0}
+  jumpHeight: 5
+  currentWpn: {fileID: 0}
   playerName: Girard
   hp: 100
 --- !u!50 &6658361359251743018
