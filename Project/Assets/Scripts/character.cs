@@ -25,9 +25,6 @@ public class Character : MonoBehaviour
     void FixedUpdate()
     {
         HandleMovement();
-
-        
-    
     }
     void Update()
     {
@@ -52,16 +49,15 @@ public class Character : MonoBehaviour
         Vector2 velocity = new Vector2(moveX * speed, moveY * speed);
         rb.velocity = velocity;
 
-        // Set animation parameters
-        if (velocity != Vector2.zero && motion != null)
+        if (velocity.sqrMagnitude > 0.01f && motion != null) // Using sqrMagnitude to compare without needing to use Mathf.Sqrt
         {
-            motion.SetBool("isMoving", true);
+        motion.SetBool("isMoving", true);
             if (moveX != 0)
             {
                 transform.localScale = new Vector3(Mathf.Sign(moveX), 1, 1); // Flip sprite based on direction
             }
         }
-        else if (motion != null)
+        else
         {
             motion.SetBool("isMoving", false);
         }
