@@ -15,14 +15,16 @@ public class DirectionsInteration : MonoBehaviour {
 
     void Update() {
         if(Input.GetKeyDown(KeyCode.E) && playerInRange) {
-            zeroText();
-        } else {
+            if(instructionsPanel.activeInHierarchy){
+                 zeroText();
+            } else {
             instructionsPanel.SetActive(true);
             StartCoroutine(Typing());
+            }
         }
     }
 
-
+    //resets text
     public void zeroText(){
         instructionsText.text = "";
         index = 0;
@@ -30,6 +32,7 @@ public class DirectionsInteration : MonoBehaviour {
     }
 
 
+    //text and text generation speed
     IEnumerator Typing(){
         foreach(char letter in instructions[index].ToCharArray()){
             instructionsText.text += letter;
@@ -50,7 +53,7 @@ public class DirectionsInteration : MonoBehaviour {
 
 
 
-
+    //if the player is in range or not
     private void OnTriggerEnter2D (Collider2D other){
         if(other.CompareTag("Player"))
             playerInRange = true;

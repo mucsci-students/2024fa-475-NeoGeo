@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Walkable
+  - Interactable
   layers:
   - Default
   - TransparentFX
@@ -42,6 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Full Black Background
+    uniqueID: 3927778183
+    locked: 0
   - name: Floors
     uniqueID: 2216575153
     locked: 0
@@ -56,6 +60,9 @@ TagManager:
     locked: 0
   - name: Interacable Objects
     uniqueID: 1018807261
+    locked: 0
+  - name: Enemies
+    uniqueID: 2185766049
     locked: 0
   - name: Player
     uniqueID: 3651411247
