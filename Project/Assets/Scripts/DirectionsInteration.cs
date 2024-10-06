@@ -1,20 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DirectionsInteration : MonoBehaviour {
-    public Transform cam;
-    public float playerActivateDistance;
-    bool active = false;
 
+    public GameObject instructionsPanel;
+    public Text instructionsText;
+    public string[] instructions;
+    private int index;
 
-    void Update() 
-    {
-        RaycastHit hit;
-        //active = Physics.Raycast(cam.position, cam.TransformDirection(Vector3.forward, out hit, playerActivateDistance));
+    public float wordSpeed;
+    public bool playerInRange;
 
-        if(Input.GetKeyDown(KeyCode.E)){
-            print("Welcome to the very old and abandoned castle! \n In order to use your conveniently equiped weapon, click the Left Mouse Button \n Have fun exploring!");
+    void Update() {
+        if(Input.GetKeyDown(KeyCode.E) && playerInRange) {
+            zeroText();
+        } else {
+            instructionsPanel.SetActive(true);
+            StartCoroutine(Typing());
         }
     }
+
+
+    public void zeroText(){
+        instructionsText.text = "";
+        index = 0;
+        instructionsPanel.SetActive(false);
+    }
+
+
+    IEnumerator Typing(){
+        foreach(char letter in instructions[index].ToCharArray()){
+            instructionsText.text += letter;
+            yield return new WaitForSeconds(wordSpeed);
+        }
+    }
+
+
+    public void NextLine(){
+        if(index < instructions.Length - 1){
+            index++;
+            instructionsText.text = "";
+            StartCoroutine(Typing());
+        } else {
+            zeroText();
+        }
+    }
+
+
+
+
+    private void OnTriggerEnter2D (Collider2D other){
+        if(other.CompareTag("Player"))
+            playerInRange = true;
+    }
+
+    private void OnTriggerExit2D (Collider2D other){
+        if(other.CompareTag("Player")){
+            playerInRange = false;
+            zeroText();
+        }
+    }
+
 }
