@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
             Die();
         if (Input.GetMouseButtonDown(0)) // Left mouse button to attack
         {
-            Slash();
+            Attack();
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -63,25 +63,16 @@ public class Character : MonoBehaviour
         }
     }
 
-    void Slash()
+    void Attack()
     {
-    
+        motion.SetBool("isArmed", currentWpn!=null); //sets animation for armed attack or not
+        motion.SetBool("Charge", (currentWpn!=null && currentWpn.isProjectile)); //projectiles charge until mouse release to shoot arrow
+            
             if (motion != null)
             {
-                motion.SetTrigger("Slash");
+                motion.SetTrigger("Attack");
             }
-            
-            Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, 1f); // radius can change if needed
-
-            /*foreach (Collider2D target in hitTargets)
-            {
-                // Assuming your target has an hp script/component
-                hp targetHp = target.GetComponent<hp>();
-                if (targetHp != null)
-                {
-                    targetHp.TakeDamage(currentWpn.damage); // Use the weapon's damage value
-                }
-            }*/
+        
         
     }
 
