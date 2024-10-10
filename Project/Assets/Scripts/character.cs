@@ -54,7 +54,15 @@ public class Character : MonoBehaviour
         motion.SetBool("isMoving", true);
             if (moveX != 0)
             {
-                transform.localScale = new Vector3(Mathf.Sign(moveX), 1, 1); // Flip sprite based on direction
+                if(moveX < 0)
+                {
+                    transform.localScale = new Vector3(-0.8f, 0.8f, 0.8f);
+                }
+                else if(moveX > 0)
+                {
+                    transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+                }
+                //transform.localScale = new Vector3(Mathf.Sign(moveX), 1, 1); // Flip sprite based on direction
             }
         }
         else
