@@ -68,6 +68,9 @@ TagManager:
   - name: Player
     uniqueID: 3651411247
     locked: 0
+  - name: Weapons
+    uniqueID: 2248731241
+    locked: 0
   - name: On Top of Player
     uniqueID: 1198668939
     locked: 0
