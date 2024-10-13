@@ -7,6 +7,7 @@ TagManager:
   - Walkable
   - Interactable
   - Weapon
+  - Fire
   layers:
   - Default
   - TransparentFX

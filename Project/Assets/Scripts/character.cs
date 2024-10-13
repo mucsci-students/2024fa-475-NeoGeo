@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public float speed = 5.0f;
-    public float jumpHeight = 5.0f;
-    public Weapon currentWpn;
+    public float speed = 1.0f;
+    public float jumpHeight = 1.0f;
+    public Weapon weapon;
     private Rigidbody2D rb;
     private Animator motion;
     private bool isAlive;
     public string playerName = "Girard";
-    public int hp = 100;
+    public int hp = 60; // 6 hearts, multiples of 5 to allow for half hearts
     private float moveX;
     private float moveY;
 
@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         motion = GetComponent<Animator>();
         isAlive = true; // Set isAlive to true initially
+
     }
 
     void FixedUpdate()
@@ -73,8 +74,8 @@ public class Character : MonoBehaviour
 
     void Attack()
     {
-        motion.SetBool("isArmed", currentWpn!=null); //sets animation for armed attack or not
-        motion.SetBool("Charge", (currentWpn!=null && currentWpn.isProjectile)); //projectiles charge until mouse release to shoot arrow
+        motion.SetBool("isArmed", weapon!=null); //sets animation for armed attack or not
+        motion.SetBool("isProjectile", (weapon !=null && weapon.isProjectile)); //projectiles charge until mouse release to shoot arrow
             
             if (motion != null)
             {
