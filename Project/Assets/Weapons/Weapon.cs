@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
     public Rigidbody2D wpnBody;
     public CompositeCollider2D wpnCollider;
     public Sprite wpnSprite;
-    public float damage = 1.0f;
+    public int damage = 1;
     public float weight = 1.0f;
     public bool isProjectile = false;
 
@@ -29,7 +29,7 @@ public class Weapon : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
         // Try to get the Health component of the object hit
-        PlayerStats targetHealth = col.gameObject.GetComponent<PlayerStats>();
+        PlayerHealth targetHealth = col.gameObject.GetComponent<PlayerHealth>();
         
         // If the object has a Health component and is alive, deal damage
         if (targetHealth != null)

@@ -11,6 +11,11 @@ public class fire1 : MonoBehaviour
     private CapsuleCollider2D burn;
     private int currentFrame; 
 
+    public int damagePerSecond = 5; // Damage dealt per second
+    private float damageInterval = 1f; // Time interval between damage applications (1 second)
+    private float nextDamageTime = 0f; // Tracks when to deal the next damage
+
+
     
     void Start()
     {
@@ -30,25 +35,18 @@ public class fire1 : MonoBehaviour
         spriteRenderer.sprite = frames[currentFrame];
     }
 
-    public int damagePerSecond = 5; // Damage dealt per second
-    private float damageInterval = 1f; // Time interval between damage applications (1 second)
-    private float nextDamageTime = 0f; // Tracks when to deal the next damage
+    
 
-    void OnCollisionStay(Collision collision)
+    void OnCollision2DStay(Collision2D collision)
     {
-        // Check if it's time to deal damage
         if (Time.time >= nextDamageTime)
         {
-            // Assuming the collided object has a health component
-// Get the PlayerHealth component from the collided object
-var health = collision.gameObject.GetComponent<PlayerHealth>();
+        var health = collision.gameObject.GetComponent<PlayerHealth>();
 
-// Check if the PlayerHealth component is not null
-if (health != null)
-{
-    // Call a method on the PlayerHealth script to apply damage
-    health.TakeDamage(damagePerSecond);
-}
+        if (health != null)
+        {
+            health.TakeDamage(damagePerSecond);
+        }
             if (health != null)
             {
                 health.TakeDamage(damagePerSecond);

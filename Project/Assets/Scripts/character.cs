@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -11,60 +9,65 @@ public class Character : MonoBehaviour
     private Animator motion;
     private bool isAlive;
     public string playerName = "Girard";
-    public int hp = 60; // 6 hearts, multiples of 5 to allow for half hearts
     private float moveX;
     private float moveY;
+    private PlayerHealth hp;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         motion = GetComponent<Animator>();
         isAlive = true; // Set isAlive to true initially
+        hp = GetComponent<PlayerHealth>();
 
+        // Subscribe to health changes
+        hp.onHealthChangedCallback += OnHealthChanged;
+    }
+
+    void OnDestroy()
+    {
+        // Unsubscribe from health changes to avoid memory leaks
+        if (hp != null)
+        {
+            hp.onHealthChangedCallback -= OnHealthChanged;
+        }
     }
 
     void FixedUpdate()
     {
-        HandleMovement();
+        if (isAlive)
+        {
+            HandleMovement();
+        }
     }
+
     void Update()
     {
-        moveX = Input.GetAxis("Horizontal"); // left/right movement (A/D)
-        moveY = Input.GetAxis("Vertical"); // up/down movement (W/S)
-        if (hp <= 0)
-            Die();
+        if (!isAlive) return;
+
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
+
         if (Input.GetMouseButtonDown(0)) // Left mouse button to attack
         {
             Attack();
         }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            motion.SetTrigger("Jump");
+            Jump();
         }
-
     }
 
     void HandleMovement()
     {
-
-        Vector2 velocity = new Vector2(moveX * speed, moveY * speed);
+        Vector2 velocity = new Vector2(moveX * speed, rb.velocity.y);
         rb.velocity = velocity;
 
-        if (velocity.sqrMagnitude > 0.01f && motion != null) // Using sqrMagnitude to compare without needing to use Mathf.Sqrt
+        if (Mathf.Abs(velocity.x) > 0.01f)
         {
-        motion.SetBool("isMoving", true);
-            if (moveX != 0)
-            {
-                if(moveX < 0)
-                {
-                    transform.localScale = new Vector3(-0.8f, 0.8f, 0.8f);
-                }
-                else if(moveX > 0)
-                {
-                    transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-                }
-                //transform.localScale = new Vector3(Mathf.Sign(moveX), 1, 1); // Flip sprite based on direction
-            }
+            motion.SetBool("isMoving", true);
+            transform.localScale = new Vector3(Mathf.Sign(moveX) * 0.8f, 0.8f, 0.8f);
         }
         else
         {
@@ -72,39 +75,46 @@ public class Character : MonoBehaviour
         }
     }
 
-    void Attack()
+    void Jump()
     {
-        motion.SetBool("isArmed", weapon!=null); //sets animation for armed attack or not
-        motion.SetBool("isProjectile", (weapon !=null && weapon.isProjectile)); //projectiles charge until mouse release to shoot arrow
-            
-            if (motion != null)
-            {
-                motion.SetTrigger("Attack");
-            }
-        
-        
-    }
-
-
-    void Die()
-    {
-        if (isAlive)
+        if (Mathf.Abs(rb.velocity.y) < 0.001f)
         {
-            isAlive = false;
-            Debug.Log(playerName + " has died.");
-            // Disable movement and play death animation
-            rb.velocity = Vector2.zero;
-            if (motion != null)
-            {
-                motion.SetTrigger("die");
-            }
+            rb.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+            motion.SetTrigger("Jump");
         }
     }
 
-    // Optional: Add Gizmos to show the attack range
-    void OnDrawGizmosSelected()
+    void Attack()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 1f);
+        motion.SetBool("isArmed", weapon != null);
+        motion.SetBool("isProjectile", weapon != null && weapon.isProjectile);
+
+        if (motion != null)
+        {
+            motion.SetTrigger("Attack");
+        }
     }
+
+    void Die()
+    {
+        if (!isAlive) return;
+
+        isAlive = false;
+        Debug.Log(playerName + " has died.");
+        rb.velocity = Vector2.zero;
+        if (motion != null)
+        {
+            motion.SetTrigger("die");
+        }
+    }
+
+    void OnHealthChanged()
+    {
+        // Optionally, update character behavior based on health
+        if (hp.Health <= 0)
+        {
+            Die();
+        }
+    }
+
 }

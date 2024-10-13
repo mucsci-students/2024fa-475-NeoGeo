@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 5c0f78e4acfe21a4594760304164796e
-timeCreated: 1528773206
-licenseType: Store
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - emptyHeartSprite: {fileID: -1968879435, guid: 38a6821681be28240b5c583a24ca91ec, type: 3}
+  - halfHeartSprite: {fileID: -1225303552, guid: 38a6821681be28240b5c583a24ca91ec, type: 3}
+  - fullHeartSprite: {fileID: 361615839, guid: 38a6821681be28240b5c583a24ca91ec, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

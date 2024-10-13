@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
@@ -8,61 +7,83 @@ public class HealthBarController : MonoBehaviour
     public Sprite halfHeartSprite;
     public Sprite fullHeartSprite;
 
-    private PlayerHealth HP;
+    private PlayerHealth hp; // Reference to the PlayerHealth component
 
-    public Image[] heartImages;  // UI Images representing the hearts
-    private int fullHeartCount;   // Count of full hearts
+    public Image[] heartImages; // UI Images representing the hearts
 
     private void Start()
     {
-        fullHeartCount = heartImages.Length;  // Start with maximum full hearts
+        // Get the PlayerHealth component from the parent GameObject
+        hp = GetComponentInParent<PlayerHealth>(); // Use GetComponentInParent to find PlayerHealth on the player
+
+        if (hp == null)
+        {
+            Debug.LogError("PlayerHealth component not found in parent.");
+            return;
+        }
+
+        // Subscribe to health changes
+        hp.onHealthChangedCallback += UpdateHeartsHUD;
+
+        // Update hearts at the start to reflect initial health
         UpdateHeartsHUD();
     }
 
-    public void UpdateHeartsHUD()
-{
-    for (int i = 0; i < heartImages.Length; i++)
+    private void OnDestroy()
     {
-        if (i < fullHeartCount)
+        // Unsubscribe from health changes to avoid memory leaks
+        if (hp != null)
         {
-            heartImages[i].sprite = fullHeartSprite;
-        }
-        else if (i == fullHeartCount && HP.Health % 5 != 0) // Check for half heart
-        {
-            heartImages[i].sprite = halfHeartSprite;
-        }
-        else
-        {
-            heartImages[i].sprite = emptyHeartSprite;
+            hp.onHealthChangedCallback -= UpdateHeartsHUD;
         }
     }
-}
+
+    // Updates the hearts on the HUD based on the current health
+    public void UpdateHeartsHUD()
+    {
+        if (hp == null) return;
+
+        float currentHealth = hp.Health;
+        float maxHealth = hp.MaxHealth;
+        int heartCapacity = 5; // Assuming each heart represents 5 HP
+
+        for (int i = 0; i < heartImages.Length; i++)
+        {
+            int heartPosition = (i + 1) * heartCapacity;
+
+            if (currentHealth >= heartPosition)
+            {
+                // Full heart
+                heartImages[i].sprite = fullHeartSprite;
+            }
+            else if (currentHealth > heartPosition - heartCapacity)
+            {
+                // Half heart
+                heartImages[i].sprite = halfHeartSprite;
+            }
+            else
+            {
+                // Empty heart
+                heartImages[i].sprite = emptyHeartSprite;
+            }
+        }
+    }
 
     public void TakeDamage(int damage)
     {
-        int heartsToRemove = damage / 5;  // Each heart worth 5 HP
-        fullHeartCount -= heartsToRemove;  // Subtract full hearts
-
-        // Make sure we don't go below zero
-        if (fullHeartCount < 0)
+        // HP should handle the damage; UpdateHeartsHUD will be called automatically
+        if (hp != null)
         {
-            fullHeartCount = 0;
+            hp.TakeDamage(damage);
         }
-
-        UpdateHeartsHUD();  // Refresh the UI
     }
 
     public void Heal(int healing)
     {
-        int heartsToAdd = healing / 5;  // Each heart worth 5 HP
-        fullHeartCount += heartsToAdd;  // Add full hearts
-
-        // Make sure we don't exceed the maximum hearts
-        if (fullHeartCount > heartImages.Length)
+        // HP should handle the healing; UpdateHeartsHUD will be called automatically
+        if (hp != null)
         {
-            fullHeartCount = heartImages.Length;
+            hp.Heal(healing);
         }
-
-        UpdateHeartsHUD();  // Refresh the UI
     }
 }

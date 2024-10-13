@@ -62,7 +62,7 @@ AnimatorStateTransition:
     m_ConditionEvent: isArmed
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: isProjecile
+    m_ConditionEvent: isProjectile
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2391629438792564208}
@@ -486,7 +486,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isProjecile
+  - m_Name: isProjectile
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -996,7 +996,7 @@ AnimatorStateTransition:
     m_ConditionEvent: isArmed
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: isProjecile
+    m_ConditionEvent: isProjectile
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1042021214914055184}
