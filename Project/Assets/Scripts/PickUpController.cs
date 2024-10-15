@@ -3,11 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PickUpController : MonoBehaviour {
+    
+    public Weapon weaponScript;
+    public Rigidbody2D rb; //2D
+    public BoxCollider2D coll; //2D
+    public Transform player, weaponContainer;
 
-//copy and paste weapon position to WeaponContainer position
+    public float pickUpRange;
+    public bool equipped;
+    public static bool slotFull;
 
     private void Start() {
         //setup
+        
+        /* get the components to assign to variables to ensure 
+            were actually able to change their state */
+        weaponScript = GetComponent<Weapon>();
+        rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<BoxCollider2D>();
+        
         if (!equipped) {
             weaponScript.enabled = false;
             rb.isKinematic = false;
@@ -20,15 +34,6 @@ public class PickUpController : MonoBehaviour {
         }
     }
 
-
-    public Weapon weaponScript;
-    public Rigidbody rb;
-    public BoxCollider coll;
-    public Transform player, weaponContainer;
-
-    public float pickUpRange;
-    public bool equipped;
-    public static bool slotFull;
 
     private void Update() {
         Vector3 distanceToPlayer = player.position - transform.position;
