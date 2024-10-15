@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectAnimation : MonoBehaviour
+public class Fire : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer; 
     public Sprite[] frames; 
