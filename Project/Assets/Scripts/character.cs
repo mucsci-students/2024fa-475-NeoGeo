@@ -61,19 +61,31 @@ public class Character : MonoBehaviour
 
     void HandleMovement()
     {
-        Vector2 velocity = new Vector2(moveX * speed, rb.velocity.y);
+        // Use the speed variable directly for movement calculation
+        float weaponWeight = weapon != null ? weapon.weight : 0f;
+        float effectiveSpeed = speed - (weaponWeight * 0.1f); // Adjust the factor as needed
+
+        // Set the velocity for both horizontal and vertical movement
+        Vector2 velocity = new Vector2(moveX * effectiveSpeed, moveY * effectiveSpeed);
         rb.velocity = velocity;
 
-        if (Mathf.Abs(velocity.x) > 0.01f)
+        // Update animation states
+        if (velocity.magnitude > 0.01f)
         {
             motion.SetBool("isMoving", true);
-            transform.localScale = new Vector3(Mathf.Sign(moveX) * 0.8f, 0.8f, 0.8f);
+            // Flip character based on horizontal movement direction
+            if (moveX != 0)
+            {
+                transform.localScale = new Vector3(Mathf.Sign(moveX) * 0.8f, 0.8f, 0.8f);
+            }
         }
         else
         {
             motion.SetBool("isMoving", false);
         }
     }
+
+
 
     void Jump()
     {
@@ -97,7 +109,6 @@ public class Character : MonoBehaviour
 
     void Die()
     {
-        if (!isAlive) return;
 
         isAlive = false;
         Debug.Log(playerName + " has died.");

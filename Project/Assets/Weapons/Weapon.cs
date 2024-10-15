@@ -19,6 +19,7 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         wpnBody = GetComponent<Rigidbody2D>();
+        wpnBody.gravityScale = 0;
         wpnCollider = GetComponent<CompositeCollider2D>();
         render = GetComponent<SpriteRenderer>();
 
@@ -35,7 +36,7 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No SpriteRenderer component found on this GameObject.");
+            Debug.LogError("Weapon doesnt have a sprite added.");
         }
     }
 
