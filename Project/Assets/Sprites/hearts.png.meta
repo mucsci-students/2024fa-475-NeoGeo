@@ -152,12 +152,12 @@ TextureImporter:
       name: hearts_empty
       rect:
         serializedVersion: 2
-        x: 101
-        y: 387
-        width: 438
+        x: 75
+        y: 243
+        width: 439
         height: 392
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,12 +173,12 @@ TextureImporter:
       name: hearts_half
       rect:
         serializedVersion: 2
-        x: 594
-        y: 387
+        x: 568
+        y: 243
         width: 438
         height: 392
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,12 +194,12 @@ TextureImporter:
       name: hearts_full
       rect:
         serializedVersion: 2
-        x: 1086
-        y: 387
-        width: 439
+        x: 1061
+        y: 243
+        width: 438
         height: 392
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

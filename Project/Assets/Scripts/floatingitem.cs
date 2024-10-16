@@ -11,6 +11,7 @@ public class FloatingItem : MonoBehaviour
     private void Start()
     {
         // Store the original position of the object
+        transform.localScale = new Vector3(0.75f,0.75f,0f);
         originalPosition = transform.position;
     }
 
@@ -23,4 +24,10 @@ public class FloatingItem : MonoBehaviour
         // Rotate around the Y-axis
         transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
     }
+
+    public void SetPosition(Vector3 newPosition)
+    {
+    originalPosition = newPosition;
+    }
+
 }

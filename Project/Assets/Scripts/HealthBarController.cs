@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
@@ -7,14 +9,18 @@ public class HealthBarController : MonoBehaviour
     public Sprite halfHeartSprite;
     public Sprite fullHeartSprite;
 
+    public GameObject player;
+
     private PlayerHealth hp; // Reference to the PlayerHealth component
 
     public Image[] heartImages; // UI Images representing the hearts
 
     private void Start()
     {
+        player = GameObject.FindWithTag("Player");
+
         // Get the PlayerHealth component from the parent GameObject
-        hp = GetComponentInParent<PlayerHealth>(); // Use GetComponentInParent to find PlayerHealth on the player
+        hp = player.GetComponent<PlayerHealth>(); // Use GetComponentInParent to find PlayerHealth on the player
 
         if (hp == null)
         {
@@ -43,11 +49,10 @@ public class HealthBarController : MonoBehaviour
     {
         if (hp == null) return;
 
-        float currentHealth = hp.Health;
-        float maxHealth = hp.MaxHealth;
-        int heartCapacity = 5; // Assuming each heart represents 5 HP
+        float currentHealth = hp.health;
+        int heartCapacity = 10; // each is 10. half is 5 HP
 
-        for (int i = 0; i < heartImages.Length; i++)
+        for (int i = 0; i < heartImages.Length; ++i)
         {
             int heartPosition = (i + 1) * heartCapacity;
 
@@ -69,21 +74,4 @@ public class HealthBarController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
-    {
-        // HP should handle the damage; UpdateHeartsHUD will be called automatically
-        if (hp != null)
-        {
-            hp.TakeDamage(damage);
-        }
-    }
-
-    public void Heal(int healing)
-    {
-        // HP should handle the healing; UpdateHeartsHUD will be called automatically
-        if (hp != null)
-        {
-            hp.Heal(healing);
-        }
-    }
 }
