@@ -7,18 +7,19 @@ public class PlayerHealth : MonoBehaviour
 
     public int health;               // Current health
     public int maxHealth = 100;      // Current maximum health
-    public int maxTotalHealth = 100; // Total health (full hearts, set to 6)
+    public int maxTotalHealth = 100; 
 
-    private HealthBarController healthBarController; // Reference to health bar controller
-    private Rigidbody2D rb; // Reference to Rigidbody2D component for applying force
+    private HealthBarController healthBarController; 
+    private Rigidbody2D rb; 
 
-    public float knockbackForce = 2f; // The force applied when taking damage
-    public float rotationAmount = 10f; // How much to rotate when hit
+    public float knockbackForce = 2f; 
+    public float rotationAmount = 10f; 
 
     private void Start()
     {
-        healthBarController = FindObjectOfType<HealthBarController>(); // Find the health bar controller in the scene
-        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component attached to the player
+        health = 100; 
+        healthBarController = FindObjectOfType<HealthBarController>(); 
+        rb = GetComponent<Rigidbody2D>(); 
 
         if (healthBarController == null)
         {
@@ -30,51 +31,39 @@ public class PlayerHealth : MonoBehaviour
             Debug.LogError("Rigidbody2D component not found on the player.");
         }
 
-        health = maxHealth; // Set current health to max health
 
-        // Trigger health change callback to initialize UI only if it's not null
+        
         if (onHealthChangedCallback != null)
         {
             onHealthChangedCallback.Invoke();
         }
 
-        healthBarController.UpdateHeartsHUD(); // Update the hearts on the health bar
+        healthBarController.UpdateHeartsHUD(); 
     }
 
     public void Heal(int amount)
     {
-        health += amount; // Add health
-        ClampHealth(); // Ensure health does not exceed max
-
-        // Trigger health change callback and update UI
+        health += amount; 
+        ClampHealth(); 
+        
         onHealthChangedCallback?.Invoke(); 
         healthBarController.UpdateHeartsHUD(); 
     }
 
     public void TakeDamage(int damage)
     {
-        health -= damage; // Subtract health
-        ClampHealth(); // Ensure health does not drop below zero
+        health = health - damage; // Subtract health
 
-        // Trigger health change callback and update UI
+        
+        ClampHealth(); 
+
         onHealthChangedCallback?.Invoke(); 
         healthBarController.UpdateHeartsHUD(); 
 
-        ApplyDamageEffects(); // Apply visual and physical effects when damaged
+        ApplyDamageEffects(); 
     }
 
-    public void AddHealth()
-    {
-        if (maxHealth < maxTotalHealth)
-        {
-            maxHealth += 10; // Increase max health by one heart
-            health = maxHealth; // Set current health to new max health
-
-            // Trigger health change callback and update UI
-            onHealthChangedCallback?.Invoke(); 
-            healthBarController.UpdateHeartsHUD(); 
-        }
-    }
+    
 
     private void ClampHealth()
     {
@@ -85,13 +74,32 @@ public class PlayerHealth : MonoBehaviour
     {
         if (rb != null)
         {
-            // Apply a small random force to the player for knockback effect
             Vector2 randomForce = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * knockbackForce;
             rb.AddForce(randomForce, ForceMode2D.Impulse);
 
-            // Apply a small random rotation to create a twitch effect
             float randomRotation = Random.Range(-rotationAmount, rotationAmount);
             rb.MoveRotation(rb.rotation + randomRotation);
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D col)
+    {
+        float timer = 0f;
+        if (col.gameObject.CompareTag("Fire"))
+        {
+            Debug.Log("Player is burning");
+
+            timer += Time.deltaTime;
+            if (timer >= 1.0f) 
+            {
+                var playerHealth = col.gameObject.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    TakeDamage(5); 
+                }
+
+                timer = 0f; 
+            }
         }
     }
 }

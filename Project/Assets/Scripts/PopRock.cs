@@ -43,6 +43,7 @@ public class PopRock : MonoBehaviour
     // Call this method to throw the grenade
     public void Throw(Vector2 throwForce)
     {
+        transform.parent = null;
         isLit = true; // Set the grenade as lit
         rb.isKinematic = false; // Set Rigidbody2D to dynamic to allow physics
         rb.AddForce(throwForce, ForceMode2D.Impulse); // Apply throwing force
@@ -60,17 +61,16 @@ public class PopRock : MonoBehaviour
     {
         if (!hasExploded)
         {
-            hasExploded = true; // Ensure it only explodes once
-            col.enabled = false; // Disable the collider to prevent further interactions
-            rb.isKinematic = true; // Make it kinematic again if needed
+            hasExploded = true; 
+            col.enabled = false;
+            rb.isKinematic = true; 
 
-            // Instantiate or activate explosion effect
+            
             if (explode != null)
             {
                 Instantiate(explode, transform.position, Quaternion.identity);
             }
 
-            // Optional: Destroy the grenade object after explosion
             Destroy(gameObject, 2f); // Adjust the delay as needed for the explosion effect to play
         }
     }

@@ -17,13 +17,6 @@ public class NPCHealth : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component attached to the player
 
-        
-
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody2D component not found on the player.");
-        }
-
         health = maxHealth; // Set current health to max health
         
     }

@@ -8,6 +8,7 @@ TagManager:
   - Interactable
   - Weapon
   - Fire
+  - Health
   layers:
   - Default
   - TransparentFX

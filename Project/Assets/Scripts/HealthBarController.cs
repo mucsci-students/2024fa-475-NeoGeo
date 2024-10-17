@@ -5,73 +5,51 @@ using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
 {
-    public Sprite emptyHeartSprite;
-    public Sprite halfHeartSprite;
-    public Sprite fullHeartSprite;
+    public Sprite emptyHeartSprite; // Sprite for an empty heart
+    public Sprite halfHeartSprite;  // Sprite for a half heart
+    public Sprite fullHeartSprite;  // Sprite for a full heart
+    public Animator healthbar;
 
-    public GameObject player;
-
-    private PlayerHealth hp; // Reference to the PlayerHealth component
-
-    public Image[] heartImages; // UI Images representing the hearts
+    public GameObject player;        // Reference to the Player GameObject
+    public PlayerHealth hp;          // Reference to the PlayerHealth component
+    public Image[] heartImages;      // Array to hold the heart images
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
-
-        // Get the PlayerHealth component from the parent GameObject
-        hp = player.GetComponent<PlayerHealth>(); // Use GetComponentInParent to find PlayerHealth on the player
+        hp = player.GetComponent<PlayerHealth>();
 
         if (hp == null)
         {
-            Debug.LogError("PlayerHealth component not found in parent.");
+            Debug.LogError("PlayerHealth component not found.");
             return;
         }
 
-        // Subscribe to health changes
-        hp.onHealthChangedCallback += UpdateHeartsHUD;
-
-        // Update hearts at the start to reflect initial health
-        UpdateHeartsHUD();
-    }
-
-    private void OnDestroy()
-    {
-        // Unsubscribe from health changes to avoid memory leaks
-        if (hp != null)
+        // Initialize the heartImages array with 5 heart images
+        heartImages = new Image[5];
+        
+        // Assuming heart images are direct children of the Panel object
+        Transform panel = transform.Find("Panel");
+        if (panel == null)
         {
-            hp.onHealthChangedCallback -= UpdateHeartsHUD;
+            Debug.LogError("Panel object not found.");
+            return;
         }
+
+        for (int i = 0; i < heartImages.Length; i++)
+        {
+            heartImages[i] = panel.GetChild(i).GetComponent<Image>();
+        }
+
+        UpdateHeartsHUD();
     }
 
     // Updates the hearts on the HUD based on the current health
     public void UpdateHeartsHUD()
     {
         if (hp == null) return;
+        healthbar.SetInteger("hp", hp.health);
 
-        float currentHealth = hp.health;
-        int heartCapacity = 10; // each is 10. half is 5 HP
-
-        for (int i = 0; i < heartImages.Length; ++i)
-        {
-            int heartPosition = (i + 1) * heartCapacity;
-
-            if (currentHealth >= heartPosition)
-            {
-                // Full heart
-                heartImages[i].sprite = fullHeartSprite;
-            }
-            else if (currentHealth > heartPosition - heartCapacity)
-            {
-                // Half heart
-                heartImages[i].sprite = halfHeartSprite;
-            }
-            else
-            {
-                // Empty heart
-                heartImages[i].sprite = emptyHeartSprite;
-            }
-        }
     }
-
+        
 }

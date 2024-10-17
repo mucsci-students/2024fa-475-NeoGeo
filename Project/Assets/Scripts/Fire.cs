@@ -9,11 +9,10 @@ public class Fire : MonoBehaviour
     public float framesPerSecond = 12f; // Frames per second
 
     private CapsuleCollider2D burnArea;
-
     private int currentFrame;
-
     private int damage = 5;
 
+    private float timer = 0.0f;
 
     void Start()
     {
@@ -24,12 +23,17 @@ public class Fire : MonoBehaviour
 
     void Update()
     {
-        currentFrame = (int)((Time.time * framesPerSecond) % frames.Length);
-
-        spriteRenderer.sprite = frames[currentFrame];
+        // Check if frames array has elements to prevent IndexOutOfRangeException
+        if (frames.Length > 0)
+        {
+            currentFrame = (int)((Time.time * framesPerSecond) % frames.Length);
+            spriteRenderer.sprite = frames[currentFrame];
+        }
+        else
+        {
+            Debug.LogWarning("Frames array is empty. No sprite to display.");
+        }
     }
-
-    private float timer = 0.0f;
 
     void OnCollisionStay2D(Collision2D col)
     {
@@ -52,6 +56,4 @@ public class Fire : MonoBehaviour
             }
         }
     }
-
-
 }

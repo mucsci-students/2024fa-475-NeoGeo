@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     public float speed = 1.0f;
     public float jumpHeight = 1.0f;
     public Weapon weapon; // Reference to the current weapon equipped
+
+    public PopRock throwable;
     private Rigidbody2D rb;
     private Animator motion;
     private bool isAlive;
@@ -40,6 +42,15 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
+        }
+        else if (Input.GetKeyDown(KeyCode.L)) //testing
+        {
+            hp.TakeDamage(10);
+        }
+         else if (Input.GetKeyDown(KeyCode.T)) //testing
+        {
+            if(throwable != null)
+                throwable.Throw(new Vector2(10, 5));
         }
         else if (Input.GetKeyDown(KeyCode.Q) && weapon != null) // Check if there's a weapon to drop
         {
@@ -162,7 +173,7 @@ public class Player : MonoBehaviour
         rb.velocity = Vector2.zero;
         if (motion != null)
         {
-            motion.SetTrigger("die");
+            motion.SetTrigger("Die");
         }
     }
 
@@ -172,6 +183,25 @@ public class Player : MonoBehaviour
         if (hp.health <= 0)
         {
             Die();
+            
         }
     }
-}
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        // Check if the collided object's tag is "Player"
+        if (col.gameObject.CompareTag("Attack"))
+        {
+            Debug.Log("Player is being attacked");
+
+    
+                // Get the script component that has the TakeDamage method
+                var playerHealth = col.gameObject.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(10); // Call the TakeDamage method
+                }
+
+            }
+        }
+    }
