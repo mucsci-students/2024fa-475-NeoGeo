@@ -6,7 +6,7 @@ public class Fire : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
     public Sprite[] frames;
-    public float framesPerSecond = 12f; // Frames per second
+    public float framesPerSecond = 12f; 
 
     private CapsuleCollider2D burnArea;
     private int currentFrame;
@@ -23,7 +23,7 @@ public class Fire : MonoBehaviour
 
     void Update()
     {
-        // Check if frames array has elements to prevent IndexOutOfRangeException
+        
         if (frames.Length > 0)
         {
             currentFrame = (int)((Time.time * framesPerSecond) % frames.Length);
@@ -37,22 +37,22 @@ public class Fire : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D col)
     {
-        // Check if the collided object's tag is "Player"
+        
         if (col.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player is burning");
 
             timer += Time.deltaTime;
-            if (timer >= 1.0f) // Check if 1 second has passed
+            if (timer >= 1.0f) 
             {
-                // Get the script component that has the TakeDamage method
+                
                 var playerHealth = col.gameObject.GetComponent<PlayerHealth>();
                 if (playerHealth != null)
                 {
-                    playerHealth.TakeDamage(damage); // Call the TakeDamage method
+                    playerHealth.TakeDamage(damage); 
                 }
 
-                timer = 0f; // Reset the timer after applying damage
+                timer = 0f; 
             }
         }
     }
