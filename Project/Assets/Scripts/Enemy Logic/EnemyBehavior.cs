@@ -22,7 +22,7 @@ public class EnemyBehavior : MonoBehaviour
         && Math.Abs(this.transform.position.y - girard.transform.position.y) < 0.5 && wait < 0)
         {
             this.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
-            wait = 750;
+            wait = 90;
         }
         wait--;
     }
