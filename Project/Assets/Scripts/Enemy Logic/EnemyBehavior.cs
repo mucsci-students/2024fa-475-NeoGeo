@@ -26,4 +26,33 @@ public class EnemyBehavior : MonoBehaviour
         }
         wait--;
     }
-}
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        // Check if the collided object's tag is "Player"
+        if (col.gameObject.CompareTag("Player"))
+        {
+
+                // Get the script component that has the TakeDamage method
+                var playerHealth = col.gameObject.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(5); // Call the TakeDamage method
+                }
+
+            }
+        
+        else if (col.gameObject.CompareTag("Weapon"))
+        {
+
+                // Get the script component that has the TakeDamage method
+                var enemyHealth = GetComponentInParent<EnemyHealth>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.TakeDamage(10); // Call the TakeDamage method
+                }
+
+            }
+        }
+    }
+

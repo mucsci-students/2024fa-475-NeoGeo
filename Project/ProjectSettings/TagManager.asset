@@ -9,6 +9,8 @@ TagManager:
   - Weapon
   - Fire
   - Health
+  - NPC
+  - Attack
   layers:
   - Default
   - TransparentFX

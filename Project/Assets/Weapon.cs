@@ -22,7 +22,6 @@ public class Weapon : MonoBehaviour
         
         if (render != null)
         {
-            // Set sprite if not assigned
             if (wpnSprite == null)
             {
                 wpnSprite = render.sprite;
@@ -33,8 +32,8 @@ public class Weapon : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        // Try to get the Health component of the object hit
-        PlayerHealth targetHealth = col.gameObject.GetComponent<PlayerHealth>();
+        
+        var targetHealth = col.gameObject.GetComponent<EnemyHealth>();
         if (targetHealth != null)
         {
             targetHealth.TakeDamage(damage); // Deal damage
@@ -44,12 +43,12 @@ public class Weapon : MonoBehaviour
     public void Slash()
     {
 
-        if (!weaponAnimation.IsPlaying("WeaponSlash")) // Replace with your actual clip name
+        if (!weaponAnimation.IsPlaying("WeaponSlash")) 
         {
             Vector3 currentPosition = transform.localPosition;
             transform.localPosition = new Vector3(currentPosition.x, currentPosition.y, currentPosition.z);
 
-            weaponAnimation.Play("WeaponSlash"); // Play the animation
+            weaponAnimation.Play("WeaponSlash"); 
         }
     }
 
