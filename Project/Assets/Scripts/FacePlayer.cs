@@ -4,29 +4,55 @@ using UnityEngine;
 
 public class FacePlayer : MonoBehaviour
 {
-    public static bool faceRight = true;
+    private GameObject girard;
+    private FaceDirection facing;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        facing = new FaceDirection();
     }
 
     // Update is called once per frame
     void Update()
     {
-        GameObject girard = GameObject.Find("Girard");
-        if(faceRight && girard.transform.position.x < this.transform.position.x)
+        girard = GameObject.Find("Girard");
+        if(facing.getFacing() && girard.transform.position.x < this.transform.position.x)
         {
-            this.transform.Rotate(0, 180, 0, Space.World);
-            faceRight = false;
+            //this.transform.Translate(0f,0.001f,0f);
+            this.transform.Rotate(0, 180, 0, Space.Self);
+            facing.flipFacing();
         }
-        else if(!faceRight && girard.transform.position.x > this.transform.position.x)
+        else if(!facing.getFacing() && girard.transform.position.x > this.transform.position.x)
         {
-            this.transform.Rotate(0, 180, 0, Space.World);
-            faceRight = true;
+            //this.transform.Translate(0f,-0.001f,0f);
+            this.transform.Rotate(0, 180, 0, Space.Self);
+            facing.flipFacing();
         }
+    }
+}
 
-        
+// Class assumes all objects are at default facing right
+public class FaceDirection
+{
+    private bool faceRight;
+
+    public
+    FaceDirection()
+    {
+        faceRight = true;
+    }
+
+    //returns true if object is facing right and false otherwise
+    public bool
+    getFacing()
+    {
+        return faceRight;
+    }
+
+    public void
+    flipFacing()
+    {
+        faceRight = !faceRight;
     }
 }
